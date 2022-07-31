@@ -1,12 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="css/github-dark-dim.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
   </head>
   <body>
-    <h2>Heading 2</h2>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template">
+
+# Git + GitHub</script></section><section ><section data-markdown><script type="text/template"># What is git
+
+<p style="line-height: 0" class="reset-paragraph image-paragraph"><img src="assets/Pasted image 20220731132138.png" alt="" class="fragment"></img></p>
+
+</script></section><section data-markdown><script type="text/template">
+## Version Control System
+
+-   Which changes were made? <!-- .element: class="fragment" -->
+-   Who made the changes? <!-- .element: class="fragment" -->
+-   When were the changes made? <!-- .element: class="fragment" -->
+-   Why were changes needed? <!-- .element: class="fragment" -->
+</script></section><section data-markdown><script type="text/template">
+## Components
+
+1. Client: Git <!-- .element: class="fragment" -->
+2. Server: ...also Git* <!-- .element: class="fragment" -->
+</script></section></section><section ><section data-markdown><script type="text/template"><p style="line-height: 0" class="reset-paragraph image-paragraph"><img src="assets/GitHub_Logo_White.png" alt="" ></img></p>
+
+<div class="block">
+
+<!-- .element: class="fragment" -->
+...is just a Git Server*\** <!-- .element: class="fragment" -->
+</div>
+
+</script></section><section data-markdown><script type="text/template">
+## *But Way More Than Just a Git Server
+</script></section><section data-markdown><script type="text/template">
+## GitHub is...
+
+- The largest library of free and open-source software <!-- .element: class="fragment" -->
+- A collaboration platform <!-- .element: class="fragment" -->
+- Project Management tool <!-- .element: class="fragment" -->
+- DevOps and Automation platform <!-- .element: class="fragment" -->
+- Social Platform <!-- .element: class="fragment" -->
+- ...and much more <!-- .element: class="fragment" -->
+</script></section></section><section ><section data-markdown><script type="text/template">
+# Development workflow
+
+How to use Git
+</script></section><section data-markdown><script type="text/template">
+## Initialize a repository
+
+<div class="block">
+
+<!-- .element: class="fragment" -->
+```sh
+λ git init
+```
+</div>
+
+
+</script></section><section data-markdown><script type="text/template">
+## Make Changes
+</script></section><section data-markdown><script type="text/template">
+## Commit Changes
+
+<div class="block">
+
+<!-- .element: class="fragment" -->
+```sh
+λ git commit -m ""
+```
+</div>
+
+
+</script></section><section data-markdown><script type="text/template">
+## Push to Origin
+
+<div class="block">
+
+<!-- .element: class="fragment" -->
+```sh
+λ git branch -M main
+λ git remote add origin https://github.com/ashwinky/intro_to_git.git
+λ git push -u origin main
+```
+</div>
+
+
+</script></section><section data-markdown><script type="text/template">
+## .gitignore
+
+The `.gitignore` file is a text file that tells Git which files or folders to ignore in a project.
+</script></section></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+
+	if(isLight(bgColor)){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+        ],
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+
+		customcontrols: {
+			controls: [
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":960,"height":700,"margin":0.04,"controls":false,"progress":true,"slideNumber":true,"transition":"slide","transitionSpeed":"fast"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
   </body>
 </html>
